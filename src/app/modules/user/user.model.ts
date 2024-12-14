@@ -39,7 +39,11 @@ const userSchema = new Schema<TUser, IUser>(
       enum: ["active", "blocked"],
       default: "active",
     },
-    profilePicture: { type: String },
+    profilePicture: {
+      type: String,
+      default:
+        "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png",
+    },
     isDeleted: { type: Boolean, required: true, default: false },
   },
   {
@@ -69,10 +73,10 @@ userSchema.post("find", function (docs) {
   });
 });
 
-// ----------- hide password to client response -----------
 userSchema.post("findOneAndUpdate", function (doc) {
   doc.password = "";
 });
+
 
 // ----------- isPasswordMatch statics methods -----------
 userSchema.statics.isPasswordMatch = async function (

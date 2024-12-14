@@ -33,9 +33,9 @@ const getAllUsers = asyncHanlder(async (req, res, next) => {
 });
 
 // ------------------- get me -------------------
-const getMe = asyncHanlder(async (req, res, next) => {
+const myProfile = asyncHanlder(async (req, res, next) => {
   const { email, role } = req.user;
-  const result = await UserServices.getMe(email, role);
+  const result = await UserServices.myProfile(email, role);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -59,12 +59,7 @@ const deleteUser = asyncHanlder(async (req, res, next) => {
 
 // ------------------- update an user -------------------
 const updateUser = asyncHanlder(async (req, res, next) => {
-  const currentUser = req.user;
-  const result = await UserServices.updateUserIntoDB(
-    currentUser,
-    req.params.id,
-    req.body
-  );
+  const result = await UserServices.updateUserIntoDB(req.user.userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -92,7 +87,7 @@ const changeUserStatus = asyncHanlder(async (req, res, next) => {
 export const UserControllers = {
   createAnUser,
   getAllUsers,
-  getMe,
+  myProfile,
   deleteUser,
   updateUser,
   changeUserStatus,

@@ -15,16 +15,14 @@ import sendEmail from "../../utils/sendEmail";
  * @returns return access token
  */
 const loginUserIntoDB = async (payload: TLoginUser) => {
-  const user = await User.findOne({ email: payload?.email });
+  const user = await User.findOne({
+    email: payload?.email,
+    isDeleted: false,
+    status: "active",
+  });
   // check if user exists, not deleted or blocked
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
-  }
-  if (user.isDeleted) {
-    throw new AppError(httpStatus.FORBIDDEN, "User is already deleted!");
-  }
-  if (user.status === "blocked") {
-    throw new AppError(httpStatus.FORBIDDEN, "User is already blocked!");
   }
 
   // check if the password is correct
@@ -33,7 +31,12 @@ const loginUserIntoDB = async (payload: TLoginUser) => {
   }
 
   // make access token and refresh token
-  const jwtPayload = { email: user.email, role: user.role };
+  const jwtPayload = {
+    name: user.name,
+    userId: user._id,
+    email: user.email,
+    role: user.role,
+  };
   const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: config.jwt_access_expires_in,
   });
@@ -123,7 +126,12 @@ const forgotPassword = async (email: string) => {
   }
 
   // jwt payload and create an access token
-  const jwtPayload = { email: user?.email, role: user?.role };
+  const jwtPayload = {
+    name: user.name,
+    userId: user._id,
+    email: user.email,
+    role: user.role,
+  };
   const resetToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: "10m",
   });
@@ -239,7 +247,12 @@ const refreshTokenSetup = async (token: string) => {
   }
 
   // create an access token
-  const jwtPayload = { email: user.email, role: user.role };
+  const jwtPayload = {
+    name: user.name,
+    userId: user._id,
+    email: user.email,
+    role: user.role,
+  };
   const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: config.jwt_access_expires_in,
   });

@@ -6,8 +6,8 @@ import path from "path";
 const result = dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 const config = {
-  database_url: process.env.PORT,
-  default_password: process.env.DEFAULT_PASSWORD,
+  app_port: process.env.PORT,
+  database_url: process.env.DATABASE_URL,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   node_environment: process.env.NODE_ENVIRONMENT,
   jwt_access_secret: process.env.JWT_ACCESS_SECRET,

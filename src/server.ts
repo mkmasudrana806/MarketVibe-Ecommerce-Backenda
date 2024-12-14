@@ -10,14 +10,15 @@ let server: Server;
 main().catch((err) => console.log(err));
 async function main() {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/auth");
+    // await mongoose.connect("mongodb://127.0.0.1:27017/marketvibe");
+    await mongoose.connect(config.database_url as string);
     console.log("Database is connected!");
 
     // seed admin to database
     await seedAdmin();
     // app listening
-    server = app.listen(config.database_url, () => {
-      console.log(`app listening on port ${config.database_url}`);
+    server = app.listen(config.app_port, () => {
+      console.log(`app listening on port ${config.app_port}`);
     });
   } catch (error) {
     console.log("Error while connecting to Database!", error);

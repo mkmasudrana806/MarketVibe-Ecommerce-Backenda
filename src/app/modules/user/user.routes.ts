@@ -29,21 +29,21 @@ router.post(
 router.get("/", auth("admin"), UserControllers.getAllUsers);
 
 // get me route
-router.get("/getMe", auth("user", "admin"), UserControllers.getMe);
+router.get("/me", auth("user", "admin", "vendor"), UserControllers.myProfile);
 
 // delete an user
 router.delete("/:id", auth("admin"), UserControllers.deleteUser);
 
 // update an user
 router.patch(
-  "/:id",
-  auth("user", "admin"),
+  "/",
+  auth("user", "admin", "vendor"),
   validateRequestData(UserValidations.updateUserValidationsSchema),
   UserControllers.updateUser
 );
 
 // change user status
-router.post(
+router.patch(
   "/change-status/:id",
   auth("admin"),
   validateRequestData(UserValidations.changeUserStatusSchema),

@@ -36,23 +36,16 @@ const auth = (...requiredRoles: string[]) => {
 
       const { email, role, iat } = decoded;
       // check if the user exits and not blocked and not deleted
-      const user = await User.findOne({ email, role });
+      const user = await User.findOne({
+        email,
+        role,
+        isDeleted: false,
+        status: "active",
+      });
       if (!user) {
         throw new AppError(
           httpStatus.NOT_FOUND,
           "Authorized user is not found!"
-        );
-      }
-      if (user.status === "blocked") {
-        throw new AppError(
-          httpStatus.NOT_FOUND,
-          "Authorized user is already blocked!"
-        );
-      }
-      if (user.isDeleted) {
-        throw new AppError(
-          httpStatus.NOT_FOUND,
-          "Authorized user is already deleted!"
         );
       }
 
