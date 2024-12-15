@@ -104,7 +104,6 @@ const changeUserStatusIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0
         _id: id,
         role: "user",
         isDeleted: false,
-        status: "active",
     });
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User is not found!");

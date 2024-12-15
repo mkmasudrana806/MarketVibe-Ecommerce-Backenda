@@ -111,7 +111,6 @@ const changeUserStatusIntoDB = async (
     _id: id,
     role: "user",
     isDeleted: false,
-    status: "active",
   });
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
