@@ -27,7 +27,7 @@ router.post("/create-vendor", upload_1.upload.single("file"),
     }
 }, (0, validateRequest_1.default)(vendor_validation_1.VendorValidationsSchema.createVendor), vendor_controller_1.VendorControllers.createVendor);
 // get all vendors (admin only)
-router.get("/", vendor_controller_1.VendorControllers.getAllVendors);
+router.get("/", (0, auth_1.default)("admin"), vendor_controller_1.VendorControllers.getAllVendors);
 // get a single vendor
 router.get("/:id", vendor_controller_1.VendorControllers.getSingleVendor);
 // delete a vendor
@@ -35,7 +35,7 @@ router.delete("/:id", (0, auth_1.default)("admin"), vendor_controller_1.VendorCo
 // update vendor
 router.put("/:id", (0, auth_1.default)("vendor"), (0, validateRequest_1.default)(vendor_validation_1.VendorValidationsSchema.updateVendor), vendor_controller_1.VendorControllers.updateVendor);
 // follow unfollow vendor
-router.patch("/follow-unfollow/:id", (0, auth_1.default)("user", "vendor"), vendor_controller_1.VendorControllers.followUnfollowVendor);
+router.patch("/follow-unfollow/:id", (0, auth_1.default)("user"), vendor_controller_1.VendorControllers.followUnfollowVendor);
 // change vendor status
 router.patch("/change-status/:id", (0, auth_1.default)("admin"), (0, validateRequest_1.default)(vendor_validation_1.VendorValidationsSchema.changeVendorStatusSchema), vendor_controller_1.VendorControllers.changeVendorStatus);
 exports.VendorRoutes = router;

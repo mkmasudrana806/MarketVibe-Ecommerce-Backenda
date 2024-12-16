@@ -9,6 +9,7 @@ const user_routes_1 = require("../modules/user/user.routes");
 const auth_rotues_1 = require("../modules/auth/auth.rotues");
 const product_routes_1 = require("../modules/product/product.routes");
 const vendor_routes_1 = require("../modules/vendor/vendor.routes");
+const order_routes_1 = require("../modules/order/order.routes");
 const router = express_1.default.Router();
 // user
 router.use("/users", user_routes_1.UserRoutes);
@@ -18,4 +19,6 @@ router.use("/auth", auth_rotues_1.AuthRoutes);
 router.use("/products", product_routes_1.ProductRoutes);
 // vendors
 router.use("/vendors", vendor_routes_1.VendorRoutes);
+// orders
+router.use("/orders", order_routes_1.OrderRoutes);
 exports.ApiRoutes = router;

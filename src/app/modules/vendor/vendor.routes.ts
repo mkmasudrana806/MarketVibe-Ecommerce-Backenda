@@ -27,7 +27,7 @@ router.post(
 );
 
 // get all vendors (admin only)
-router.get("/", VendorControllers.getAllVendors);
+router.get("/", auth("admin"), VendorControllers.getAllVendors);
 
 // get a single vendor
 router.get("/:id", VendorControllers.getSingleVendor);
@@ -46,7 +46,7 @@ router.put(
 // follow unfollow vendor
 router.patch(
   "/follow-unfollow/:id",
-  auth("user", "vendor"),
+  auth("user"),
   VendorControllers.followUnfollowVendor
 );
 
