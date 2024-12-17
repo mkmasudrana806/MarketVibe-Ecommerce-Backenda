@@ -6,12 +6,13 @@ import auth from "../../middlewares/auth";
 import { upload } from "../../utils/upload";
 import AppError from "../../utils/AppError";
 import httpStatus from "http-status";
+import { multerUploadVercel } from "../../utils/multerUploadVercel";
 const router = express.Router();
 
 // create an user
 router.post(
   "/create-user",
-  upload.single("file"), // file uploading
+  multerUploadVercel.single("file"), // file uploading
   // parse text data to JSON data
   (req: Request, res: Response, next: NextFunction) => {
     if (req.body?.data) {

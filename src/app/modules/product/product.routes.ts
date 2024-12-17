@@ -6,6 +6,7 @@ import { ProductControllers } from "./product.controller";
 import { upload } from "../../utils/upload";
 import AppError from "../../utils/AppError";
 import httpStatus from "http-status";
+import { multerUploadVercel } from "../../utils/multerUploadVercel";
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const router = express.Router();
 router.post(
   "/create-product",
   auth("vendor"),
-  upload.array("images", 5), // file uploading
+  multerUploadVercel.array("images", 5), // file uploading
   // parse text data to JSON data
   (req: Request, res: Response, next: NextFunction) => {
     if (req.body?.data) {
