@@ -61,6 +61,9 @@ const createVendorInDB = (logo, payload) => __awaiter(void 0, void 0, void 0, fu
         const uploadedImage = yield (0, sendImageToCloudinary_1.default)(path, imageName);
         vendorData.logo = uploadedImage.secure_url;
     }
+    else {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Logo is not uploaded!");
+    }
     // start transaction
     const session = yield mongoose_1.default.startSession();
     try {

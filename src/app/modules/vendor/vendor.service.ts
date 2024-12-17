@@ -42,6 +42,8 @@ const createVendorInDB = async (logo: TfileUpload, payload: TVendor) => {
     const path = logo.path;
     const uploadedImage: any = await sendImageToCloudinary(path, imageName);
     vendorData.logo = uploadedImage.secure_url;
+  } else {
+    throw new AppError(httpStatus.BAD_REQUEST, "Logo is not uploaded!");
   }
 
   // start transaction

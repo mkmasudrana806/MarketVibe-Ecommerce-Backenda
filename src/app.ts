@@ -10,7 +10,7 @@ const app = express();
 
 // parsers (middleware)
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5000" })); // your client url
+app.use(cors({ origin: "http://localhost:3000", credentials: true })); // your client url
 app.use(cookieParser());
 
 // api routes (middleware)
