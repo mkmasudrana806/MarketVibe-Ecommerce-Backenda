@@ -4,29 +4,52 @@ import httpStatus from "http-status";
 import TOrder from "./order.interface";
 import QueryBuilder from "../../queryBuilder/queryBuilder";
 import { orderStatusSequence, searchableFields } from "./order.constant";
+import { TPayment } from "../payment/payment.interface";
+import { initiatePayment } from "../payment/payment.utils";
+import { JwtPayload } from "jsonwebtoken";
+import { CouponService } from "../coupon/coupon.service";
 
 /**
  * create a new order
  * @param payload order data
  * @returns newly created order
  */
-const createOrderInDB = async (userId: string, payload: TOrder) => {
-  // set order user
-  payload.user = userId;
+const createOrderInDB = async (user: JwtPayload, payload: TOrder) => {
+  // if coupon code is applied, again atomic check that coupon is valid
+  if (payload.couponCode) {
+    const isCouponValid = await CouponService.validateCouponIntoDB(
+      payload.couponCode,
+      payload.totalAmount,
+      payload.vendor.toString()
+    );
 
-  // calculate total amount of ordered items
-  const products = payload.items;
-  payload.totalAmount = Number(
-    products
-      .reduce(
-        (totalAmount, product) =>
-          totalAmount + product.price * product.quantity,
-        0
-      )
-      .toFixed(4)
-  );
+    if (!isCouponValid.isValid) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        "Coupon maybe invalid or expired or usage limit exceeded!"
+      );
+    }
+  }
+  // set order user
+  payload.user = user.userId;
+
+  // save order data to database
   const order = await Order.create(payload);
-  return order;
+
+  // ------------- payment data
+  const tnxId = `tnx-${Date.now()}`;
+  const paymentData: Partial<TPayment> = {
+    email: user.email,
+    amount: payload.totalAmount,
+    transactionId: tnxId,
+  };
+
+  const successUrl = `http://localhost:5000/api/payments/make-payment?tnxId=${tnxId}&userId=${user.userId}&orderId=${order._id}&status=success`;
+  const failedUrl = `http://localhost:5000/api/payments/make-payment?tnxId=${tnxId}&userId=${user.userId}&orderId=${order._id}&status=failed`;
+
+  //  initiate amarPay session and return session url
+  const session = await initiatePayment(paymentData, successUrl, failedUrl);
+  return session;
 };
 
 /**

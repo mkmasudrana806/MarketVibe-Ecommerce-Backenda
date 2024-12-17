@@ -6,7 +6,7 @@ import { OrderServices } from "./order.service";
 
 // ------------------- Create an order -------------------
 const createOrder = asyncHandler(async (req, res) => {
-  const result = await OrderServices.createOrderInDB(req.user.userId, req.body);
+  const result = await OrderServices.createOrderInDB(req.user, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,

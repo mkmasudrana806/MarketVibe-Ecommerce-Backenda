@@ -23,6 +23,10 @@ const config = {
     cloudinary_name: process.env.CLOUDINARY_NAME,
     cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
     cloudinary_secret_key: process.env.CLOUDINARY_SECRET_KEY,
+    amarpay_store_id: process.env.AMARPAY_STORE_ID,
+    amarpay_signature_key: process.env.AMARPAY_SIGNATURE_KEY,
+    amarpay_payment_url: process.env.AMARPAY_PAYMENT_URL,
+    amarpay_payment_verify_url: process.env.AMARPAY_PAYMENT_VERIFY_URL,
 };
 exports.default = config;
 // config will read your .env file, parse the contents, assign it to process.env, and return an Object with a parsed key containing the loaded content or an error key if it failed.

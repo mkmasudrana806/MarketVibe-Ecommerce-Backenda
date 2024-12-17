@@ -32,6 +32,7 @@ const orderSchema = new Schema<TOrder>(
       required: true,
     },
     orderDate: { type: Date, required: true, default: Date.now() },
+    couponCode: { type: String, required: true, default: null },
   },
   {
     timestamps: true,

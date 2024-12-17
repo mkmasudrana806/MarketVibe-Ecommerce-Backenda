@@ -18,21 +18,37 @@ const AppError_1 = __importDefault(require("../../utils/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
 const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"));
 const order_constant_1 = require("./order.constant");
+const payment_utils_1 = require("../payment/payment.utils");
+const coupon_service_1 = require("../coupon/coupon.service");
 /**
  * create a new order
  * @param payload order data
  * @returns newly created order
  */
-const createOrderInDB = (userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const createOrderInDB = (user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    // if coupon code is applied, again atomic check that coupon is valid
+    if (payload.couponCode) {
+        const isCouponValid = yield coupon_service_1.CouponService.validateCouponIntoDB(payload.couponCode, payload.totalAmount, payload.vendor.toString());
+        if (!isCouponValid.isValid) {
+            throw new AppError_1.default(http_status_1.default.FORBIDDEN, "Coupon maybe invalid or expired or usage limit exceeded!");
+        }
+    }
     // set order user
-    payload.user = userId;
-    // calculate total amount of ordered items
-    const products = payload.items;
-    payload.totalAmount = Number(products
-        .reduce((totalAmount, product) => totalAmount + product.price * product.quantity, 0)
-        .toFixed(4));
+    payload.user = user.userId;
+    // save order data to database
     const order = yield order_model_1.Order.create(payload);
-    return order;
+    // ------------- payment data
+    const tnxId = `tnx-${Date.now()}`;
+    const paymentData = {
+        email: user.email,
+        amount: payload.totalAmount,
+        transactionId: tnxId,
+    };
+    const successUrl = `http://localhost:5000/api/payments/make-payment?tnxId=${tnxId}&userId=${user.userId}&orderId=${order._id}&status=success`;
+    const failedUrl = `http://localhost:5000/api/payments/make-payment?tnxId=${tnxId}&userId=${user.userId}&orderId=${order._id}&status=failed`;
+    //  initiate amarPay session and return session url
+    const session = yield (0, payment_utils_1.initiatePayment)(paymentData, successUrl, failedUrl);
+    return session;
 });
 /**
  * get all orders

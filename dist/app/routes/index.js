@@ -12,6 +12,8 @@ const vendor_routes_1 = require("../modules/vendor/vendor.routes");
 const order_routes_1 = require("../modules/order/order.routes");
 const review_routes_1 = require("../modules/review/review.routes");
 const category_routes_1 = require("../modules/category/category.routes");
+const payment_routes_1 = require("../modules/payment/payment.routes");
+const coupon_routes_1 = require("../modules/coupon/coupon.routes");
 const router = express_1.default.Router();
 // user
 router.use("/users", user_routes_1.UserRoutes);
@@ -27,4 +29,8 @@ router.use("/orders", order_routes_1.OrderRoutes);
 router.use("/reviews", review_routes_1.ReviewRoutes);
 // categories
 router.use("/categories", category_routes_1.CategoryRoutes);
+// payments
+router.use("/payments", payment_routes_1.PaymentRoutes);
+// coupons
+router.use("/coupons", coupon_routes_1.CouponRoutes);
 exports.ApiRoutes = router;

@@ -14,6 +14,7 @@ type TOrder = {
   paymentStatus: "pending" | "paid" | "failed";
   orderStatus: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   orderDate: Date;
+  couponCode: string | null;
 };
 
 export default TOrder;
