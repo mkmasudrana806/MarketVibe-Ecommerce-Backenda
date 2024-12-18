@@ -9,12 +9,12 @@ const user_controller_1 = require("./user.controller");
 const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const user_validation_1 = require("./user.validation");
 const auth_1 = __importDefault(require("../../middlewares/auth"));
-const upload_1 = require("../../utils/upload");
 const AppError_1 = __importDefault(require("../../utils/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
+const multerUploadVercel_1 = require("../../utils/multerUploadVercel");
 const router = express_1.default.Router();
 // create an user
-router.post("/create-user", upload_1.upload.single("file"), // file uploading
+router.post("/create-user", multerUploadVercel_1.multerUploadVercel.single("file"), // file uploading
 // parse text data to JSON data
 (req, res, next) => {
     var _a, _b;

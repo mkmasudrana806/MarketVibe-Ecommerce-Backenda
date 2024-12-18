@@ -9,12 +9,12 @@ const vendor_controller_1 = require("./vendor.controller");
 const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const vendor_validation_1 = require("./vendor.validation");
 const auth_1 = __importDefault(require("../../middlewares/auth"));
-const upload_1 = require("../../utils/upload");
 const AppError_1 = __importDefault(require("../../utils/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
+const multerUploadVercel_1 = require("../../utils/multerUploadVercel");
 const router = express_1.default.Router();
 // create a new vendor
-router.post("/create-vendor", upload_1.upload.single("file"), 
+router.post("/create-vendor", multerUploadVercel_1.multerUploadVercel.single("file"), 
 // parse text data to JSON data
 (req, res, next) => {
     var _a, _b;

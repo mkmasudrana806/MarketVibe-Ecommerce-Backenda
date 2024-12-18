@@ -9,12 +9,12 @@ const validateRequest_1 = __importDefault(require("../../middlewares/validateReq
 const product_validation_1 = require("./product.validation");
 const auth_1 = __importDefault(require("../../middlewares/auth"));
 const product_controller_1 = require("./product.controller");
-const upload_1 = require("../../utils/upload");
 const AppError_1 = __importDefault(require("../../utils/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
+const multerUploadVercel_1 = require("../../utils/multerUploadVercel");
 const router = express_1.default.Router();
 // create a new product
-router.post("/create-product", (0, auth_1.default)("vendor"), upload_1.upload.array("images", 5), // file uploading
+router.post("/create-product", (0, auth_1.default)("vendor"), multerUploadVercel_1.multerUploadVercel.array("images", 5), // file uploading
 // parse text data to JSON data
 (req, res, next) => {
     var _a, _b;
